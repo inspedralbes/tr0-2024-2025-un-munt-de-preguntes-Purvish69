@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuestionario</title>
-   <style>
+    <style>
         .hidden {
             display: none;
         }
@@ -13,50 +14,58 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
-    </style> 
+    </style>
 </head>
+
 <body>
 
     <?php
 
     // Iniciar la sesión para poder almacenar y acceder a los datos en $_SESSION
-    session_start(); 
+    session_start();
+
+    header("Access-Control-Allow-Origin: *"); 
+    header("Content-Type: application/json"); 
+
+
 
     // Cargar el archivo JSON que contiene las preguntas
     $jsonFile = 'data.json';
     $jsonData = file_get_contents($jsonFile);
-    $data = json_decode($jsonData, true); 
+    $data = json_decode($jsonData, true);
+
+
 
 
     if (!isset($_SESSION['preguntas_seleccionadas'])) {
-        $preguntas = $data['preguntes']; 
-        shuffle($preguntas); 
-        $preguntasSeleccionadas = array_slice($preguntas, 0, 10); 
-        $_SESSION['preguntas_seleccionadas'] = $preguntasSeleccionadas; 
-        $_SESSION['preguntaActual'] = 0; 
+        $preguntas = $data['preguntes'];
+        shuffle($preguntas);
+        $preguntasSeleccionadas = array_slice($preguntas, 0, 10);
+        $_SESSION['preguntas_seleccionadas'] = $preguntasSeleccionadas;
+        $_SESSION['preguntaActual'] = 0;
         $_SESSION['respuestas'] = [];
-        $_SESSION['mensajeDeResultado'] = ''; 
+        $_SESSION['mensajeDeResultado'] = '';
     } else {
-        $preguntasSeleccionadas = $_SESSION['preguntas_seleccionadas']; 
+        $preguntasSeleccionadas = $_SESSION['preguntas_seleccionadas'];
     }
 
-    $preActual = $_SESSION['preguntaActual']; 
-    $pregunta = isset($preguntasSeleccionadas[$preActual]) ? $preguntasSeleccionadas[$preActual] : null; 
+    $preActual = $_SESSION['preguntaActual'];
+    $pregunta = isset($preguntasSeleccionadas[$preActual]) ? $preguntasSeleccionadas[$preActual] : null;
 
     // Si no hay más preguntas, mostrar la puntuación y un botón para reiniciar el cuestionario
     if ($pregunta === null) {
-        $totalPreguntas = count($_SESSION['preguntas_seleccionadas']); 
+        $totalPreguntas = count($_SESSION['preguntas_seleccionadas']);
         $respuestasCorrectas = 0;
 
         // Contar las respuestas correctas
         for ($index = 0; $index < count($_SESSION['respuestas']); $index++) {
-            $respuestaId = $_SESSION['respuestas'][$index]; 
+            $respuestaId = $_SESSION['respuestas'][$index];
 
             // Verificar si la respuesta es correcta
             for ($j = 0; $j < count($_SESSION['preguntas_seleccionadas'][$index]['respostes']); $j++) {
                 $respuesta = $_SESSION['preguntas_seleccionadas'][$index]['respostes'][$j];
                 if ($respuesta['id'] == $respuestaId && $respuesta['correcta']) {
-                    $respuestasCorrectas++; 
+                    $respuestasCorrectas++;
                 }
             }
         }
@@ -71,20 +80,21 @@
         // Reiniciar el cuestionario si el usuario hace clic en el botón de reinicio
         if (isset($_POST['action']) && $_POST['action'] == 'restart') {
             session_unset();
-            session_destroy(); 
-            header('Location: ' . $_SERVER['PHP_SELF']); 
+            session_destroy();
+            header('Location: ' . $_SERVER['PHP_SELF']);
             exit();
         }
     } else {
-        ?>
+    ?>
 
-        <h1>Cuestionario</h1><hr>
+        <h1>Cuestionario</h1>
+        <hr>
 
         <?php
         // Mostrar el resultado de la respuesta anterior (si existe)
         if (isset($_SESSION['resultado']) && $_SESSION['resultado'] != '') {
             echo "<div class='mensajeDeRes'>" . $_SESSION['resultado'] . "</div>";
-            $_SESSION['resultado'] = ''; 
+            $_SESSION['resultado'] = '';
         }
         ?>
 
@@ -106,7 +116,7 @@
             <button type="submit" name="action" value="next">Siguiente</button>
         </form>
 
-        <?php
+    <?php
     }
 
     // Procesar la acción del formulario (siguiente pregunta o reinicio)
@@ -136,8 +146,8 @@
                 // Verificar si se han respondido todas las preguntas
                 if ($_SESSION['preguntaActual'] >= count($_SESSION['preguntas_seleccionadas'])) {
                     // Finalizar el cuestionario y mostrar la puntuación
-                    $_SESSION['preguntaActual'] = count($_SESSION['preguntas_seleccionadas']); 
-                    header('Location: ' . $_SERVER['PHP_SELF']); 
+                    $_SESSION['preguntaActual'] = count($_SESSION['preguntas_seleccionadas']);
+                    header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 } else {
                     // Recargar la página para mostrar la siguiente pregunta
@@ -147,7 +157,9 @@
             }
         }
     }
+    
     ?>
 
 </body>
+
 </html>

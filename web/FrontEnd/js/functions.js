@@ -1,11 +1,13 @@
 let data;
 
-fetch('http://localhost:8000/Proyecto TR0 UMDP/FrontEnd/data.json')
+
+fetch('http://localhost:8000/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php')
 .then(response => response.json())
 .then(data => {
   console.log(data)
   pintaPreguntes(data)
 });
+
 
 
 function pintaPreguntes(info){
