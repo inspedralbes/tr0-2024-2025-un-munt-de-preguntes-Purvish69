@@ -1,0 +1,544 @@
+{
+  "preguntes": [
+    {
+      "id": 1,
+      "pregunta": "Quin és el límit de velocitat en una autopista?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "100 km/h",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "120 km/h",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "90 km/h",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "140 km/h",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta1.jpeg"
+    },
+    {
+      "id": 2,
+      "pregunta": "Quin senyal indica un Stop?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Un triangle blau",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Un octàgon vermell",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Un cercle groc",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Un quadrat verd",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta2.jpeg"
+    },
+    {
+      "id": 3,
+      "pregunta": "Quan és obligatori utilitzar el cinturó de seguretat?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Només en autopistes",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Només de nit",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Sempre",
+          "correcta": true
+        },
+        {
+          "id": 4,
+          "resposta": "Només en ciutat",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta3.jpeg"
+    },
+    {
+      "id": 4,
+      "pregunta": "Què indica una línia contínua al mig de la carretera?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Prohibit aturar-se",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Prohibit avançar",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Zona d'aparcament",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Final de carretera",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta4.jpg"
+    },
+    {
+      "id": 5,
+      "pregunta": "Què has de fer quan el semàfor està en groc intermitent?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Esperar que es posi verd",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Reduir la velocitat i continuar amb precaució",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Accelerar",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Aturar-se completament",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta5.jpeg"
+    },
+    {
+      "id": 6,
+      "pregunta": "Quin és el significat d'una línia discontínua al mig de la carretera?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Carretera de sentit únic",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Es pot avançar si és segur",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Prohibit avançar",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Prohibit estacionar",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta6.jpg"
+    },
+    {
+      "id": 7,
+      "pregunta": "Quin vehicle té preferència en una rotonda?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Els vehicles més grans",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Els vehicles que ja estan dins de la rotonda",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Els vehicles que entren a la rotonda",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Els vehicles més ràpids",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta7.jpg"
+    },
+    {
+      "id": 8,
+      "pregunta": "Què indica el senyal de límit de velocitat amb un número dins d'un cercle vermell?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "El límit recomanat de velocitat",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "El límit màxim de velocitat",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "El límit mínim de velocitat",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Prohibit circular",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta8.jpeg"
+    },
+    {
+      "id": 9,
+      "pregunta": "Què has de fer si un vehicle d'emergència amb sirenes està darrere teu?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Aturar-te immediatament",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Augmentar la velocitat",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Continuar a la mateixa velocitat",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Deixar passar i apartar-te",
+          "correcta": true
+        }
+      ],
+      "imatge": "css/pregunta9.jpg"
+    },
+    {
+      "id": 10,
+      "pregunta": "En quin cas pots fer servir el mòbil mentre condueixes?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Quan condueixes de nit",
+          "correcta": false
+        },
+        {
+          "id": 2,
+          "resposta": "Mai, excepte amb mans lliures",
+          "correcta": true
+        },
+        {
+          "id": 3,
+          "resposta": "Quan estàs aturat en un semàfor",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Quan condueixes en carretera",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta10.jpg"
+    },
+    {
+      "id": 11,
+      "pregunta": "Quin és el significat d'un senyal amb una 'P' blava?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Zona d'aparcament",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Prohibit aparcar",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Carril bici",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Zona per vianants",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta11.jpg"
+    },
+    {
+      "id": 12,
+      "pregunta": "Què has de fer si veus un senyal de cediu el pas?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Reduir la velocitat i cedir el pas si és necessari",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Aturar-te completament",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Continuar sense reduir la velocitat",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Cedir el pas només a vehicles grans",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta12.jpg"
+    },
+    {
+      "id": 13,
+      "pregunta": "Quin és el límit de velocitat en una zona urbana?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "50 km/h",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "30 km/h",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "70 km/h",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "90 km/h",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta13.jpeg"
+    },
+    {
+      "id": 14,
+      "pregunta": "Què indica una línia groga contínua a la vora de la vorera?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Prohibit aparcar",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Prohibit avançar",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Zona d'estacionament",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Carril bici",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta14.jpg"
+    },
+    {
+      "id": 15,
+      "pregunta": "Què has de fer si veus un senyal de perill amb un dibuix d'animals?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Reduir la velocitat i estar atent als animals",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Aturar-te completament",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Tocar el clàxon per espantar els animals",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Accelerar per evitar-los",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta15.jpg"
+    },
+    {
+      "id": 16,
+      "pregunta": "Quan has d'utilitzar les llums llargues?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Només en carreteres sense il·luminació",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Sempre que condueixis de nit",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Només en zones urbanes",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Quan condueixes darrere d'un altre vehicle",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta16.jpg"
+    },
+    {
+      "id": 17,
+      "pregunta": "Què indica una senyal de zona de vianants?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Prohibit circular vehicles",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Prohibit aparcar",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Carril bici",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Final de carretera",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta17.jpg"
+    },
+    {
+      "id": 18,
+      "pregunta": "Quina és la sanció per no respectar el límit de velocitat?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Multa econòmica i retirada de punts",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Només multa econòmica",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Només retirada de punts",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Amonestació verbal",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta18.jpg"
+    },
+    {
+      "id": 19,
+      "pregunta": "Què has de fer si un semàfor està vermell?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Aturar-te completament",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Reduir la velocitat",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Passar ràpidament",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Esperar que es posi groc",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta19.jpeg"
+    },
+    {
+      "id": 20,
+      "pregunta": "Què has de fer si un senyal indica que una carretera està tallada?",
+      "respostes": [
+        {
+          "id": 1,
+          "resposta": "Seguir el desviament indicat",
+          "correcta": true
+        },
+        {
+          "id": 2,
+          "resposta": "Continuar si no ve ningú",
+          "correcta": false
+        },
+        {
+          "id": 3,
+          "resposta": "Tornar enrere",
+          "correcta": false
+        },
+        {
+          "id": 4,
+          "resposta": "Aturar-te i esperar que obrin",
+          "correcta": false
+        }
+      ],
+      "imatge": "css/pregunta20.jpg"
+    }
+  ]
+}
