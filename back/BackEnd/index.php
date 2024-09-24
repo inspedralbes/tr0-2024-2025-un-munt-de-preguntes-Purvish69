@@ -1,165 +1,78 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+session_start();
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuestionario</title>
-    <style>
-        .hidden {
-            display: none;
-        }
+// Esto permite acceder CORS y JSON
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
 
-        .result-message {
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-    </style>
-</head>
+// Conectar con el archivo JSON y decodificarlo
+$jsonFile = 'data.json';
+$jsonData = file_get_contents($jsonFile);
+$data = json_decode($jsonData, true);
 
-<body>
-
-    <?php
-
-    // Iniciar la sesión para poder almacenar y acceder a los datos en $_SESSION
-    session_start();
-
-    header("Access-Control-Allow-Origin: *"); 
-    header("Content-Type: application/json"); 
-
-
-
-    // Cargar el archivo JSON que contiene las preguntas
-    $jsonFile = 'data.json';
-    $jsonData = file_get_contents($jsonFile);
-    $data = json_decode($jsonData, true);
-
-
-
-
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Cargar preguntas si no están en sesión
     if (!isset($_SESSION['preguntas_seleccionadas'])) {
         $preguntas = $data['preguntes'];
         shuffle($preguntas);
-        $preguntasSeleccionadas = array_slice($preguntas, 0, 10);
-        $_SESSION['preguntas_seleccionadas'] = $preguntasSeleccionadas;
+        $_SESSION['preguntas_seleccionadas'] = array_slice($preguntas, 0, 10);
         $_SESSION['preguntaActual'] = 0;
         $_SESSION['respuestas'] = [];
-        $_SESSION['mensajeDeResultado'] = '';
-    } else {
-        $preguntasSeleccionadas = $_SESSION['preguntas_seleccionadas'];
     }
+    echo json_encode($_SESSION['preguntas_seleccionadas']);
+}
 
-    $preActual = $_SESSION['preguntaActual'];
-    $pregunta = isset($preguntasSeleccionadas[$preActual]) ? $preguntasSeleccionadas[$preActual] : null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
 
-    // Si no hay más preguntas, mostrar la puntuación y un botón para reiniciar el cuestionario
-    if ($pregunta === null) {
-        $totalPreguntas = count($_SESSION['preguntas_seleccionadas']);
-        $respuestasCorrectas = 0;
+    if ($action === 'next') {
+        $respuestaId = $_POST['respuesta'] ?? null;
+        $preguntasSeleccionadas = $_SESSION['preguntas_seleccionadas'];
+        $preActual = $_SESSION['preguntaActual'];
 
-        // Contar las respuestas correctas
-        for ($index = 0; $index < count($_SESSION['respuestas']); $index++) {
-            $respuestaId = $_SESSION['respuestas'][$index];
+        // Guardar la respuesta seleccionada
+        $esCorrecta = false;
+        if ($respuestaId !== null) {
+            $_SESSION['respuestas'][$preActual] = $respuestaId;
 
             // Verificar si la respuesta es correcta
-            for ($j = 0; $j < count($_SESSION['preguntas_seleccionadas'][$index]['respostes']); $j++) {
-                $respuesta = $_SESSION['preguntas_seleccionadas'][$index]['respostes'][$j];
+            foreach ($preguntasSeleccionadas[$preActual]['respostes'] as $respuesta) {
                 if ($respuesta['id'] == $respuestaId && $respuesta['correcta']) {
-                    $respuestasCorrectas++;
+                    $esCorrecta = true;
+                    break;
                 }
             }
         }
 
-        // Mostrar la puntuación final
-        echo "<h1>Cuestionario completado</h1>";
-        echo "<b><p>Tu puntuación es: $respuestasCorrectas/$totalPreguntas</p></b>";
-        echo "<form method='POST'>";
-        echo "<button type='submit' name='action' value='restart'>Iniciar cuestionario</button>";
-        echo "</form>";
+        // Avanzar a la siguiente pregunta
+        $_SESSION['preguntaActual']++;
 
-        // Reiniciar el cuestionario si el usuario hace clic en el botón de reinicio
-        if (isset($_POST['action']) && $_POST['action'] == 'restart') {
-            session_unset();
-            session_destroy();
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            exit();
-        }
-    } else {
-    ?>
-
-        <h1>Cuestionario</h1>
-        <hr>
-
-        <?php
-        // Mostrar el resultado de la respuesta anterior (si existe)
-        if (isset($_SESSION['resultado']) && $_SESSION['resultado'] != '') {
-            echo "<div class='mensajeDeRes'>" . $_SESSION['resultado'] . "</div>";
-            $_SESSION['resultado'] = '';
-        }
-        ?>
-
-        <form id="preActual" method="POST">
-            <div id="contenedorPregunta">
-                <?php
-                // Mostrar la pregunta actual y sus respuestas
-                echo "<h3>" . ($preActual + 1) . ". " . $pregunta['pregunta'] . "</h3>";
-                echo "<img src='" . $pregunta['imatge'] . "' alt='Imagen de la pregunta' style='max-width:300px;'><br><br>";
-
-                // Recorrer y mostrar las posibles respuestas de la pregunta
-                for ($i = 0; $i < count($pregunta['respostes']); $i++) {
-                    $respuesta = $pregunta['respostes'][$i];
-                    echo "<input type='radio' name='respuesta' value='" . $respuesta['id'] . "'>";
-                    echo $respuesta['resposta'] . "<br><br>";
-                }
-                ?>
-            </div>
-            <button type="submit" name="action" value="next">Siguiente</button>
-        </form>
-
-    <?php
-    }
-
-    // Procesar la acción del formulario (siguiente pregunta o reinicio)
-    if (isset($_POST['action'])) {
-        if ($_POST['action'] == 'next') {
-            // Guardar la respuesta seleccionada por el usuario
-            if (isset($_POST['respuesta'])) {
-                $idRespuesta = $_POST['respuesta'];
-                $_SESSION['respuestas'][$preActual] = $idRespuesta; // aqui lo voy a guardar las respuestas de SESSION
-
-                // Verificar si la respuesta es correcta
-                $respuestaCorrecta = false;
-                for ($i = 0; $i < count($pregunta['respostes']); $i++) {
-                    $respuesta = $pregunta['respostes'][$i];
-                    if ($respuesta['id'] == $idRespuesta && $respuesta['correcta']) {
-                        $respuestaCorrecta = true;
-                        break;
+        // Verificar si se han respondido todas las preguntas
+        if ($_SESSION['preguntaActual'] >= count($preguntasSeleccionadas)) {
+            // Calcular puntuación final
+            $totalPreguntas = count($preguntasSeleccionadas);
+            $respuestasCorrectas = 0;
+            foreach ($_SESSION['respuestas'] as $index => $respuestaId) {
+                foreach ($preguntasSeleccionadas[$index]['respostes'] as $respuesta) {
+                    if ($respuesta['id'] == $respuestaId && $respuesta['correcta']) {
+                        $respuestasCorrectas++;
                     }
                 }
-
-                // Almacenar el resultado de la verificación (correcto o incorrecto)
-                $_SESSION['resultado'] = $respuestaCorrecta ? "Respuesta correcta." : "Respuesta incorrecta.";
-
-                // Avanzar a la siguiente pregunta
-                $_SESSION['preguntaActual']++;
-
-                // Verificar si se han respondido todas las preguntas
-                if ($_SESSION['preguntaActual'] >= count($_SESSION['preguntas_seleccionadas'])) {
-                    // Finalizar el cuestionario y mostrar la puntuación
-                    $_SESSION['preguntaActual'] = count($_SESSION['preguntas_seleccionadas']);
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit();
-                } else {
-                    // Recargar la página para mostrar la siguiente pregunta
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit();
-                }
             }
+            $_SESSION['resultado'] = "Tu puntuación es: $respuestasCorrectas/$totalPreguntas";
+            echo json_encode(['finished' => true, 'result' => $_SESSION['resultado']]);
+            session_unset(); // Reiniciar sesión para permitir un nuevo cuestionario
+            session_destroy();
+        } else {
+            echo json_encode(['finished' => false, 'correcta' => $esCorrecta]);
         }
     }
-    
-    ?>
 
-</body>
-
-</html>
+    if ($action === 'restart') {
+        // Reiniciar cuestionario
+        session_unset();
+        session_destroy();
+        echo json_encode(['status' => 'restart']);
+    }
+}
+?>
