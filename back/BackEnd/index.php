@@ -1,34 +1,31 @@
 <?php
-// Iniciar la sesión
+
 session_start();
 
-// Leer el archivo JSON
 $jsonData = file_get_contents('data.json');
 $preguntas = json_decode($jsonData, true)['preguntes'];
 
-// Si no hay preguntas guardadas en la sesión, seleccionamos 10 preguntas aleatorias
+// Si no hay preguntas guardadas en la sesión, seleccionamos 10 preguntas aleatorias desde json
 if (!isset($_SESSION['preguntas'])) {
-    // Mezclar las preguntas y seleccionar 10 aleatorias
+  
     shuffle($preguntas);
     $preguntasSeleccionadas = array_slice($preguntas, 0, 10);
 
-    // Guardar las preguntas en la sesión
+    // Aqui guardo las preguntas en la sesión
     $_SESSION['preguntas'] = $preguntasSeleccionadas;
-    $_SESSION['respuestas'] = []; // Inicializar el array de respuestas
+    $_SESSION['respuestas'] = []; 
 } else {
-    // Recuperar preguntas ya seleccionadas
+    // Recuperar preguntas que ya esta seleccionadas
     $preguntasSeleccionadas = $_SESSION['preguntas'];
 }
 
-// Verificar si se han enviado respuestas
+// Esto verificar si se han enviado respuestas
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recuperar las respuestas enviadas
-    $respuestasUsuario = $_POST['respuestas'] ?? [];
     
-    // Guardar las respuestas en la sesión
+    $respuestasUsuario = $_POST['respuestas'] ?? [];
+
     $_SESSION['respuestas'] = $respuestasUsuario;
     
-    // Enviar una respuesta de éxito al frontend
     echo json_encode(['status' => 'success']);
     exit;
 }
