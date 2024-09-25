@@ -1,139 +1,105 @@
-// Almacenar todas las preguntas cargadas del Backend
+// Variables globales para las preguntas, el índice actual y el contador de respuestas correctas
 let preguntas = [];
-// Mostrar la primera pregunta cuando carga la página
-let preguntaActual = 0;
+let indiceActual = 0;
+let respuestasCorrectas = 0;
 
-// Función para mostrar la pregunta actual
+// Función para cargar las preguntas del backend
+function cargarPreguntas() {
+    fetch('http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php')
+        .then(response => response.json())
+        .then(data => {
+            preguntas = data;
+            mostrarPregunta();
+        })
+        .catch(error => console.error('Error al cargar las preguntas:', error));
+}
+
+// Función para mostrar una pregunta con las opciones de respuesta
 function mostrarPregunta() {
-  if (preguntaActual < preguntas.length) {
-    const pregunta = preguntas[preguntaActual];
+    if (indiceActual >= preguntas.length) {
+        mostrarResultados(); // Mostrar resultados si se han respondido todas las preguntas
+        return;
+    }
+
+    const pregunta = preguntas[indiceActual];
     let htmlString = "";
 
-    htmlString += `<h3>${preguntaActual + 1}) ${pregunta.pregunta}</h3>`;
-    htmlString += `<img src="${pregunta.imatge}" alt="Imagen de la pregunta" style="width: 200px; height: auto;"><br><br>`;
-
-    for (let i = 0; i < pregunta.respostes.length; i++) {
-      const respuesta = pregunta.respostes[i];
-      htmlString += `<input type="radio" name="respuesta" value="${respuesta.id}" id="respuesta${respuesta.id}"> 
-                     <label for="respuesta${respuesta.id}">${respuesta.resposta}</label><br><br>`;
+    // Generar el HTML de la pregunta y las opciones
+    htmlString += `<h3>${indiceActual + 1}) ${pregunta.pregunta}</h3>`;
+    
+    // Mostrar la imagen de la pregunta si existe
+    if (pregunta.imatge) {
+        htmlString += `<img src="${pregunta.imatge}" alt="Imagen de la pregunta" style="width: 200px; height: auto;"><br><br>`;
     }
-    htmlString += '<button onclick="siguientePregunta()">Siguiente</button>';
 
-    // Insertar el HTML generado en el contenedor de preguntas
-    document.getElementById("pintaPreguntes").innerHTML = htmlString;
-  } else {
-    mostrarPuntuacion();
-  }
-}
-
-// Función para manejar el paso a la siguiente pregunta
-function siguientePregunta() {
-  const seleccionado = document.querySelector(
-    'input[name="respuesta"]:checked'
-  );
-
-  if (!seleccionado) {
-    alert("Por favor, selecciona una respuesta.");
-    return;
-  }
-
-  const respuestaId = seleccionado.value;
-
-  console.log(
-    `Pregunta ${preguntaActual + 1}, Opción seleccionada: ${respuestaId}`
-  );
-
-  // Enviar la respuesta al backend para procesar y avanzar a la siguiente pregunta
-  fetch(
-    "http://localhost:8888/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        respuesta: respuestaId,
-        action: "next",
-      }),
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      if (data && data.finished) {
-        // Muestro resultado si no hay más preguntas
-        mostrarPuntuacion(data.result);
-      } else if (data && !data.finished) {
-        // Mostrar si la respuesta fue correcta o incorrecta
-        const mensaje = data.correcta
-          ? "¡Respuesta correcta!"
-          : "Respuesta incorrecta.";
-        alert(mensaje);
-
-        // Avanzar a la siguiente pregunta
-        preguntaActual++;
-        mostrarPregunta();
-      }
+    // Generar las opciones de respuesta
+    pregunta.respostes.forEach((respuesta, index) => {
+        htmlString += `
+            <div>
+                <input type="radio" name="respuesta" id="respuesta${index}" value="${respuesta.id}">
+                <label for="respuesta${index}">${respuesta.resposta}</label>
+            </div>
+        `;
     });
+
+   
+    htmlString += `<br><button id="button-siguiente">Siguiente</button>`;
+
+    // Pintar el contenido en el contenedor "pintaPreguntes"
+    document.getElementById("pintaPreguntes").innerHTML = htmlString;
+
+    // Añadir el event listener para el botón "Siguiente"
+    document.getElementById('button-siguiente').addEventListener('click', siguientePregunta);
 }
 
-// Función para mostrar la puntuación final después de completar el cuestionario
-function mostrarPuntuacion(resultado) {
-  let htmlString = `<h1>Cuestionario completado</h1><p>${resultado}</p>`;
-  // Botón para reiniciar el cuestionario
-  htmlString +=
-    '<button onclick="reiniciarCuestionario()">Iniciar cuestionario</button>';
-  // Insertar el HTML generado en el contenedor de preguntas
-  document.getElementById("pintaPreguntes").innerHTML = htmlString;
+// Función para mostrar el resultado final
+function mostrarResultados() {
+    let htmlString = `<h3>Has completado el cuestionario.</h3>`;
+    htmlString += `<p>Has acertado ${respuestasCorrectas} de ${preguntas.length} preguntas.</p>`;
+    
+    // Botón para reiniciar el cuestionario
+    htmlString += `<button id="reiniciar-btn">Reiniciar cuestionario</button>`;
+    
+    // Pintar el resultado final
+    document.getElementById("pintaPreguntes").innerHTML = htmlString;
+    
+    // Añadir el event listener para reiniciar el cuestionario
+    document.getElementById("reiniciar-btn").addEventListener('click', reiniciarCuestionario);
+}
+
+// Función para pasar a la siguiente pregunta
+function siguientePregunta() {
+    // Obtener la respuesta seleccionada
+    const seleccionada = document.querySelector('input[name="respuesta"]:checked');
+    if (seleccionada) {
+        const respuestaId = seleccionada.value;
+        const preguntaActual = preguntas[indiceActual];
+
+        // Verificar si la respuesta seleccionada es correcta
+        const respuestaCorrecta = preguntaActual.respostes.find(r => r.correcta).id;
+        if (parseInt(respuestaId) === respuestaCorrecta) {
+            respuestasCorrectas++; // Incrementar el contador de respuestas correctas
+        }
+
+        console.log('Pregunta actual:', indiceActual + 1);
+        console.log('Respuesta seleccionada:', respuestaId);
+
+        // Avanzar al siguiente índice
+        indiceActual++;
+        mostrarPregunta();
+    } else {
+        alert('Por favor, selecciona una respuesta antes de continuar.');
+    }
 }
 
 // Función para reiniciar el cuestionario
 function reiniciarCuestionario() {
-  // Enviar solicitud al backend para reiniciar el cuestionario
-  fetch(
-    "http://localhost:8888/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        action: "restart",
-      }),
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      if (data && data.status === "restart") {
-        // Reiniciar el índice de la pregunta actual y cargar nuevas preguntas
-        preguntaActual = 0;
-        fetch(
-          "http://localhost:8888/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php"
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            if (data && data.length) {
-              preguntas = data;
-              mostrarPregunta();
-            }
-          });
-      } else {
-        console.error("Error al reiniciar el cuestionario.");
-      }
-    })
-    .catch((error) =>
-      console.error("Error al reiniciar el cuestionario:", error)
-    );
+    indiceActual = 0; // Reiniciar el índice
+    respuestasCorrectas = 0; // Reiniciar el contador de respuestas correctas
+    cargarPreguntas(); // Cargar las preguntas de nuevo
 }
 
-// Cargar preguntas al inicio
-fetch(
-  "http://localhost:8888/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php"
-)
-  .then((response) => response.json())
-  .then((data) => {
-    if (data && data.length) {
-      preguntas = data;
-      mostrarPregunta();
-    }
-  })
-  .catch((error) => console.error("Error al cargar preguntas:", error));
+// Cargar las preguntas al cargar la página
+window.onload = function() {
+    cargarPreguntas();
+};

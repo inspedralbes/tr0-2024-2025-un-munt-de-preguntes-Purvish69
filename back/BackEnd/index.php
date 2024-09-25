@@ -1,78 +1,39 @@
 <?php
+// Iniciar la sesión
 session_start();
 
-// Esto permite acceder CORS y JSON
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
+// Leer el archivo JSON
+$jsonData = file_get_contents('data.json');
+$preguntas = json_decode($jsonData, true)['preguntes'];
 
-// Conectar con el archivo JSON y decodificarlo
-$jsonFile = 'data.json';
-$jsonData = file_get_contents($jsonFile);
-$data = json_decode($jsonData, true);
+// Si no hay preguntas guardadas en la sesión, seleccionamos 10 preguntas aleatorias
+if (!isset($_SESSION['preguntas'])) {
+    // Mezclar las preguntas y seleccionar 10 aleatorias
+    shuffle($preguntas);
+    $preguntasSeleccionadas = array_slice($preguntas, 0, 10);
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Cargar preguntas si no están en sesión
-    if (!isset($_SESSION['preguntas_seleccionadas'])) {
-        $preguntas = $data['preguntes'];
-        shuffle($preguntas);
-        $_SESSION['preguntas_seleccionadas'] = array_slice($preguntas, 0, 10);
-        $_SESSION['preguntaActual'] = 0;
-        $_SESSION['respuestas'] = [];
-    }
-    echo json_encode($_SESSION['preguntas_seleccionadas']);
+    // Guardar las preguntas en la sesión
+    $_SESSION['preguntas'] = $preguntasSeleccionadas;
+    $_SESSION['respuestas'] = []; // Inicializar el array de respuestas
+} else {
+    // Recuperar preguntas ya seleccionadas
+    $preguntasSeleccionadas = $_SESSION['preguntas'];
 }
 
+// Verificar si se han enviado respuestas
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-
-    if ($action === 'next') {
-        $respuestaId = $_POST['respuesta'] ?? null;
-        $preguntasSeleccionadas = $_SESSION['preguntas_seleccionadas'];
-        $preActual = $_SESSION['preguntaActual'];
-
-        // Guardar la respuesta seleccionada
-        $esCorrecta = false;
-        if ($respuestaId !== null) {
-            $_SESSION['respuestas'][$preActual] = $respuestaId;
-
-            // Verificar si la respuesta es correcta
-            foreach ($preguntasSeleccionadas[$preActual]['respostes'] as $respuesta) {
-                if ($respuesta['id'] == $respuestaId && $respuesta['correcta']) {
-                    $esCorrecta = true;
-                    break;
-                }
-            }
-        }
-
-        // Avanzar a la siguiente pregunta
-        $_SESSION['preguntaActual']++;
-
-        // Verificar si se han respondido todas las preguntas
-        if ($_SESSION['preguntaActual'] >= count($preguntasSeleccionadas)) {
-            // Calcular puntuación final
-            $totalPreguntas = count($preguntasSeleccionadas);
-            $respuestasCorrectas = 0;
-            foreach ($_SESSION['respuestas'] as $index => $respuestaId) {
-                foreach ($preguntasSeleccionadas[$index]['respostes'] as $respuesta) {
-                    if ($respuesta['id'] == $respuestaId && $respuesta['correcta']) {
-                        $respuestasCorrectas++;
-                    }
-                }
-            }
-            $_SESSION['resultado'] = "Tu puntuación es: $respuestasCorrectas/$totalPreguntas";
-            echo json_encode(['finished' => true, 'result' => $_SESSION['resultado']]);
-            session_unset(); // Reiniciar sesión para permitir un nuevo cuestionario
-            session_destroy();
-        } else {
-            echo json_encode(['finished' => false, 'correcta' => $esCorrecta]);
-        }
-    }
-
-    if ($action === 'restart') {
-        // Reiniciar cuestionario
-        session_unset();
-        session_destroy();
-        echo json_encode(['status' => 'restart']);
-    }
+    // Recuperar las respuestas enviadas
+    $respuestasUsuario = $_POST['respuestas'] ?? [];
+    
+    // Guardar las respuestas en la sesión
+    $_SESSION['respuestas'] = $respuestasUsuario;
+    
+    // Enviar una respuesta de éxito al frontend
+    echo json_encode(['status' => 'success']);
+    exit;
 }
+
+// Enviar las preguntas como respuesta en formato JSON
+header('Content-Type: application/json');
+echo json_encode($preguntasSeleccionadas);
 ?>
