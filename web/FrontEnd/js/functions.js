@@ -4,7 +4,7 @@ let respuestasCorrectas = 0;
 
 // Función para cargar las preguntas del backend
 function cargarPreguntas() {
-    fetch('http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/index.php')
+    fetch('http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/getPreguntes.php')
         .then(response => response.json())
         .then(data => {
             preguntas = data;

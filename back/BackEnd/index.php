@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 
 $jsonData = file_get_contents('data.json');
@@ -33,4 +33,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Enviar las preguntas como respuesta en formato JSON
 header('Content-Type: application/json');
 echo json_encode($preguntasSeleccionadas);
+*/
 ?>
