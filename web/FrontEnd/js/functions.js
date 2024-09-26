@@ -13,19 +13,20 @@ function cargarPreguntas() {
         .catch(error => console.error('Error al cargar las preguntas:', error));
 }
 
-// Función para mostrar una pregunta con las opciones de respuesta
+// Función para mostrar preguntas con las opciones de respuesta
 function mostrarPregunta() {
     if (indiceActual >= preguntas.length) {
-        mostrarResultados(); // Muestro resultados si se han respondido todas las preguntas
+        // muestro resultado si han respondido todas las respuestas
+        mostrarResultados(); 
         return;
     }
 
+    //Cargar Las preguntas, imagen y sus opciones 
     const pregunta = preguntas[indiceActual];
     let htmlString = "";
     htmlString += `<h3>${indiceActual + 1}) ${pregunta.pregunta}</h3>`;
     htmlString += `<img src="${pregunta.imatge}" alt="Imagen de la pregunta" style="width: 200px; height: auto;"><br><br>`;
 
-    // Botones tipo "A", "B", "C", "D"
     const letras = ["A", "B", "C", "D"];
 
     pregunta.respostes.forEach((respuesta, index) => {
