@@ -1,34 +1,33 @@
 <?php
-
 session_start();
 
-$numPreguntas = 10;
+// Leer el número de preguntas a devolver desde el parámetro GET
+$numPreguntas = isset($_GET['numPreguntas']) ? (int)$_GET['numPreguntas'] : 10;
 
-if (isset($_GET['numPreguntas'])) {
-    $numPreguntas = intval($_GET['numPreguntas']);
-}
+// Verificar si ya hay preguntas seleccionadas en la sesión
+if (!isset($_SESSION['preguntas']) || count($_SESSION['preguntas']) != $numPreguntas) {
+    // Leer el archivo JSON de preguntas
+    $jsonData = file_get_contents('data.json');
+    $preguntas = json_decode($jsonData, true)['preguntes'];
 
-// Leer el archivo json
-$jsonData = file_get_contents('data.json');
-$preguntas = json_decode($jsonData, true)['preguntes'];
-
-// Esta bucle de if es para guardar las preguntas si no hay preguntas guardadas en la sesion, y selecciona las preguntas aleatorias
-if (!isset($_SESSION['preguntas'])) {
+    // Barajar las preguntas y seleccionar el número deseado
     shuffle($preguntas);
-    $preguntasSeleccionadas = array_splice($preguntas, 0, $numPreguntas);
+    $preguntasSeleccionadas = array_slice($preguntas, 0, $numPreguntas);
+
+    // Guardar las preguntas seleccionadas en la sesión
     $_SESSION['preguntas'] = $preguntasSeleccionadas;
 } else {
+    // Usar las preguntas que ya están en la sesión
     $preguntasSeleccionadas = $_SESSION['preguntas'];
 }
 
-//Eliminar el indice que marca la respuesta correcta
-for ($i = 0; $i < count($preguntasSeleccionadas); $i++) {
-    for ($j = 0; $j < count($preguntasSeleccionadas[$i]['respostes']); $j++) {
-        unset($preguntasSeleccionadas[$i]['respostes'][$j]['correcta']);
+// Eliminar el índice que marca la respuesta correcta antes de enviar al frontend
+foreach ($preguntasSeleccionadas as &$pregunta) {
+    foreach ($pregunta['respostes'] as &$respuesta) {
+        unset($respuesta['correcta']);
     }
 }
 
-// Enviar las preguntas seleccionadas al FrontEnd
+// Enviar las preguntas seleccionadas al frontend
 echo json_encode($preguntasSeleccionadas);
-
 ?>

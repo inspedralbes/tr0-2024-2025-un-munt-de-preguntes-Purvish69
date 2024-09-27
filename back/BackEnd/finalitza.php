@@ -1,33 +1,28 @@
 <?php
-
 session_start();
 
-// Recibir los datos enviados desde el cliente
-$datosRecebidos = file_get_contents('php://input');
-$respuestasDeUsuario = json_decode($datosRecebidos,true);
+$datosRecibidos = file_get_contents('php://input');
+$respuestasDeUsuario = json_decode($datosRecibidos, true);
 
 $preguntasSeleccionadas = $_SESSION['preguntas'];
 
-//Inicializar variable
 $respuestasCorrectas = 0;
-$totalpregunta = count($preguntasSeleccionadas);
+$totalPreguntas = count($preguntasSeleccionadas);
 
-// Comparar lasa respuestas del usuario con las correctas
+// Comparar las respuestas del usuario con las correctas
+for ($i = 0; $i < $totalPreguntas; $i++) {
+    $pregunta = $preguntasSeleccionadas[$i];
 
-for($i = 0; $i< count($preguntasSeleccionadas); $i++){
-  $pregunta = $preguntasSeleccionadas[$i];
+    // Encontrar el índice de la respuesta correcta en el array de respuestas
+    $correctIndex = array_search(true, array_column($pregunta['respostes'], 'correcta'));
 
-  $respuestasCorrectasID = array_search(true,array_column($preguntasSeleccionadas[$i]['respostes'],'correcta'));
-
-  if (isset($respuestasDeUsuario[$i])&& $respuestasDeUsuario[$i] == $respuestasCorrectasID){
-   $respuestasCorrectas++; 
-  }
+    // Verificar si el usuario seleccionó la respuesta correcta
+    if (isset($respuestasDeUsuario[$i]) && $respuestasDeUsuario[$i] == $correctIndex) {
+        $respuestasCorrectas++;
+    }
 }
 
-//ENviar el resultado al cliente
-
-$resultado = ['totalPreguntas' => $totalpregunta,'respuestasCorrectas' => $respuestasCorrectas ];
-
+// Enviar el resultado al cliente
+$resultado = ['totalPreguntas' => $totalPreguntas, 'respuestasCorrectas' => $respuestasCorrectas];
 echo json_encode($resultado);
-
 ?>
