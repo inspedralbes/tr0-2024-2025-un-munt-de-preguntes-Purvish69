@@ -23,7 +23,7 @@ function mostrarPregunta() {
 
     const pregunta = preguntas[indiceActual];
     let htmlString = `<h3>${indiceActual + 1}) ${pregunta.pregunta}</h3>`;
-    htmlString += `<img src="${pregunta.imatge}" alt="Imagen de la pregunta" style="width: 200px; height: auto;"><br><br>`;
+    htmlString += `<img src="${pregunta.imatge}" alt="Imagen de la pregunta" style="width: 200px; height: auto;"><br>`;
 
     const letras = ["A", "B", "C", "D"];
     pregunta.respostes.forEach((respuesta, index) => {
@@ -57,6 +57,10 @@ function siguientePregunta() {
     if (seleccionado) {
         const respuestaIndex = parseInt(seleccionado.dataset.index);
         respuestasUsuario[indiceActual] = respuestaIndex;
+
+        //Mostrar en console la pregunta y la opcion seleccionada
+        const letras = ["A", "B", "C", "D"];
+        console.log(`Pregunta ${indiceActual +1 }, Opción ${letras[respuestaIndex]}`);
 
         indiceActual++;
         mostrarPregunta();
