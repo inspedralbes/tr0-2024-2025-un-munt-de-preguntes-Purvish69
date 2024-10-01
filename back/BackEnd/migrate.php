@@ -1,27 +1,55 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "myDB";
+// Parámetros de conexión
+$host = "localhost";
+$usuario = "root";
+$password = "";
+$nombreBD = "autoescuela";
 
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
-// Check connection
-if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
+$conn = new mysqli($host, $usuario, $password);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, firstname, lastname FROM MyGuests";
-$result = mysqli_query($conn, $sql);
+$sql = "CREATE DATABASE IF NOT EXISTS $nombreBD";
+if($conn->query($sql) === TRUE){
+    echo "Base de datos creado.<br>";
+}else{
+    echo "Error en crear la base de datos: " . $conn->error;
+}
 
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-    echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
-  }
+$conn->select_db($nombreBD);
+
+// Crear tabla 'preguntes'
+$crearTabla = "
+CREATE TABLE IF NOT EXISTS preguntes (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    pregunta VARCHAR(255) NOT NULL,
+    imagen VARCHAR(255),
+    respuesta_correcta INT(1) NOT NULL
+)";
+
+if ($conn->query($crearTabla) === TRUE) {
+    echo "Tabla 'preguntes' creada.<br>";
 } else {
-  echo "0 results";
+    echo "Error creando la tabla: " . $conn->error;
 }
 
-mysqli_close($conn);
+// Crear tabla 'respostes'
+$crearTablaRespostes = "
+CREATE TABLE IF NOT EXISTS respostes (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    pregunta_id INT(6) UNSIGNED NOT NULL ,
+    respuesta VARCHAR(255) NOT NULL,
+    correcta BOOLEAN NOT NULL,
+    FOREIGN KEY (pregunta_id) REFERENCES preguntes(id)
+)";
+
+if ($conn->query($crearTablaRespostes) === TRUE) {
+    echo "Tabla 'respostes' creada<br>";
+} else {
+    echo "Error creando la tabla: " . $conn->error;
+}
+
+
 ?>

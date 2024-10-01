@@ -121,6 +121,7 @@ function finalizarCuestionario() {
     })
     .then((response) => response.json())
     .then((data) => {
+      console.log("Respuesta del servidor:",data);
       mostrarResultados(data);
     })
     .catch((error) => console.error("Error al enviar las respuestas:", error));

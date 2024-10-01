@@ -4,7 +4,7 @@ session_start();
 $datosRecibidos = file_get_contents('php://input');
 $respuestasDeUsuario = json_decode($datosRecibidos, true);
 
-$preguntasSeleccionadas = $_SESSION['preguntas'];
+$preguntasSeleccionadas = $_SESSION['preguntasSeleccionadas'];
 
 $respuestasCorrectas = 0;
 $totalPreguntas = count($preguntasSeleccionadas);
@@ -25,4 +25,4 @@ for ($i = 0; $i < $totalPreguntas; $i++) {
 // Enviar el resultado al cliente
 $resultado = ['totalPreguntas' => $totalPreguntas, 'respuestasCorrectas' => $respuestasCorrectas];
 echo json_encode($resultado);
-?>
+?> 
