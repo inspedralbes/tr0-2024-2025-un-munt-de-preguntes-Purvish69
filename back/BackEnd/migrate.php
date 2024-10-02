@@ -1,16 +1,7 @@
 <?php
-// Parámetros de conexión
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
 
-// Crear conexion
-$conn = new mysqli($host, $usuario, $password);
-
-if ($conn->connect_error) { //verificar la conexion
-    die("Conexión fallida: " . $conn->connect_error);
-}
+// Incluir el archivo de conexión
+require 'conexion.php';
 
 $sql = "CREATE DATABASE IF NOT EXISTS $nombreBD";
 if($conn->query($sql) === TRUE){
@@ -80,7 +71,7 @@ foreach($preguntas['preguntes'] as $pregunta){
         $correcta = $respuesta['correcta'] ? 1 : 0; // Convertir boolean a 1 o 0
 
         $stmt = $conn->prepare("INSERT INTO respostes (pregunta_id, respuesta, correcta) VALUES (?, ?, ?)");
-        $stmt->bind_param("isi", $preguntaID,$preguntaTexto,$correcta);
+        $stmt->bind_param("isi", $preguntaID,$respuestaTexto,$correcta);
         $stmt->execute();
     }
 }
@@ -88,6 +79,5 @@ foreach($preguntas['preguntes'] as $pregunta){
 echo "Datos insertados correctamente.";
 $stmt->close();
 $conn->close();
-
 
 ?>
