@@ -12,8 +12,16 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Consulta para obtener 10 preguntas aleatorias
-$sqlPreguntas = "SELECT id AS pregunta_id, pregunta, imagen FROM preguntes ORDER BY RAND() LIMIT 10";
+// Obtener el número de preguntas desde la URL
+$numPreguntas = isset($_GET['numPreguntas']) ? intval($_GET['numPreguntas']) : 10; // Por defecto 10
+
+// Validar que el número de preguntas sea un número positivo
+if ($numPreguntas <= 0) {
+    $numPreguntas = 10; // Valor por defecto si no es válido
+}
+
+// Consulta para obtener preguntas aleatorias según el número solicitado
+$sqlPreguntas = "SELECT id AS pregunta_id, pregunta, imagen FROM preguntes ORDER BY RAND() LIMIT $numPreguntas";
 $resultPreguntas = $conn->query($sqlPreguntas);
 
 $preguntas = [];

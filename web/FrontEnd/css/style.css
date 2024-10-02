@@ -1,0 +1,96 @@
+/* Estilos generales del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Color de fondo suave */
+    margin: 0;
+    padding: 20px;
+  }
+  
+  /* Contenedor principal */
+  #page-container {
+    max-width: 800px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrar el contenedor */
+    padding: 20px;
+    background-color: white; /* Fondo blanco para el contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  
+  /* Título del proyecto */
+  #proyecto {
+    text-align: center; /* Centrar el texto */
+    color: #333; /* Color del texto */
+  }
+  
+  /* Estilo para el encabezado de bienvenida */
+  h2 {
+    text-align: center; /* Centrar el texto */
+    color: #007bff; /* Color azul para el encabezado */
+  }
+  
+  /* Estilos de etiquetas y entradas */
+  label {
+    display: block; /* Hacer que las etiquetas ocupen toda la línea */
+    margin: 10px 0 5px; /* Espaciado */
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: calc(100% - 20px); /* Ancho completo menos padding */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 4px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+  }
+  
+  /* Estilo de los botones */
+  button {
+    background-color: #007bff; /* Color de fondo azul */
+    color: white; /* Color de texto blanco */
+    border: none; /* Sin borde */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+    margin-top: 10px; /* Margen superior */
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el ratón */
+  }
+  
+  /* Estilo para las preguntas y las opciones de respuesta */
+  #pintaPreguntes {
+    margin-top: 20px; /* Margen superior */
+  }
+  
+  /* Estilo de cada opción de respuesta */
+  .btn-respuesta {
+    width: 100%; /* Botones ocupan todo el ancho */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde suave */
+    border-radius: 4px; /* Bordes redondeados */
+    background-color: #f8f9fa; /* Color de fondo suave */
+    transition: background-color 0.3s; /* Transición suave */
+  }
+  
+  .btn-respuesta:hover {
+    background-color: #e2e6ea; /* Color más oscuro al pasar el ratón */
+  }
+  
+  /* Estilo para el estado de la partida */
+  #estadoDeLaPartida {
+    margin-top: 20px; /* Margen superior */
+    background-color: #f9f9f9; /* Color de fondo suave */
+    padding: 15px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  }
+  
+  /* Estilo de la imagen */
+  img {
+    display: block; /* Mostrar la imagen como un bloque */
+    margin: 0 auto; /* Centrar la imagen */
+    max-width: 100%; /* Ancho máximo de la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+  }
+  
