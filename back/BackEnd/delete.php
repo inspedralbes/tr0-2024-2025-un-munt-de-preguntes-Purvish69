@@ -13,8 +13,8 @@ if ($conn->connect_error) {
 }
 
 // Verificar si se ha recibido el ID de la pregunta
-if (isset($_POST['id'])) {
-    $preguntaId = $_POST['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
+    $preguntaId = $_GET['id'];
 
     // Eliminar las respuestas asociadas a la pregunta
     $sqlEliminarRespuestas = "DELETE FROM respostes WHERE pregunta_id = ?";
