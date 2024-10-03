@@ -1,6 +1,8 @@
 let preguntas = [];
 let indiceActual = 0;
 let respuestasUsuario = [];
+let tiempoRestante = 30; // Tiempo en segundos
+let temporizador; // Variable para el temporizador
 
 // Almacenar el nombre del usuario en localStorage
 let nombreUsuario = localStorage.getItem("nombreUsuario") || "";
@@ -11,6 +13,7 @@ let estadoDeLaPartida = {
   preguntes: [],
 };
 
+// Mostrar la página inicial para poner el nombre de jugadores y las preguntas que queremos
 function mostrarPaginaInicial() {
   const paginaInicial = document.getElementById("pagina_inicial");
   paginaInicial.innerHTML = `
@@ -65,11 +68,32 @@ function cargarPreguntas(numPreguntas) {
         })),
       };
 
+      iniciarTemporizador();
       mostrarPregunta();
       actualizarMarcador();
       document.getElementById("pagina_inicial").innerHTML = ""; // Ocultar página inicial
     })
     .catch((error) => console.error("Error al cargar las preguntas:", error));
+}
+
+function iniciarTemporizador() {
+  tiempoRestante = 30; // Reiniciar el tiempo a 30 segundos
+  actualizarTemporizador();
+
+  temporizador = setInterval(() => {
+    tiempoRestante--;
+    actualizarTemporizador();
+
+    if (tiempoRestante <= 0) { // Corregir aquí: debe ser tiempoRestante
+      clearInterval(temporizador);
+      finalizarCuestionario();
+    }
+
+  }, 1000);
+}
+
+function actualizarTemporizador() {
+  document.getElementById("temporizador").innerHTML = `Tiempo restante: ${tiempoRestante} segundos`;
 }
 
 // Función para mostrar una pregunta con las opciones de respuesta
@@ -156,6 +180,8 @@ function actualizarMarcador() {
 
 // Función para enviar las respuestas y mostrar el resultado final
 function finalizarCuestionario() {
+  clearInterval(temporizador);
+
   fetch(
     "http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/finalitza.php",
     {
@@ -205,4 +231,6 @@ function reiniciarCuestionario() {
 }
 
 // Cargar las preguntas cuando la página esté lista
-window.onload = mostrarPaginaInicial;
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarPaginaInicial();
+});
