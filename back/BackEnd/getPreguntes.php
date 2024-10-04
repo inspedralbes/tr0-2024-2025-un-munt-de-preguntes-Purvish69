@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include 'cone.php';
 
 // Obtener el número de preguntas desde la URL
@@ -66,6 +67,9 @@ foreach ($preguntasArray as &$pregunta) {
 
 // Guardar las preguntas seleccionadas en la sesión
 $_SESSION['preguntasSeleccionadas'] = $preguntasArray;
+
+// Imprimir las preguntas guardadas en la sesión
+error_log(print_r($_SESSION['preguntasSeleccionadas'], true));
 
 // Enviar las preguntas seleccionadas al frontend en formato JSON
 echo json_encode($preguntasArray);

@@ -192,26 +192,13 @@ function finalizarCuestionario() {
       body: JSON.stringify(respuestasUsuario),
     }
   )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Error del servidor: ${response.status}`);
-      }
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
-      if (data.error) {
-        alert("Error: " + data.error);
-        return;
-      }
       console.log("Respuesta del servidor:", data);
       mostrarResultados(data);
     })
-    .catch((error) => {
-      console.error("Error al enviar las respuestas:", error);
-      alert("Ocurrió un error al procesar las respuestas. Inténtalo de nuevo más tarde.");
-    });
+    .catch((error) => console.error("Error al enviar las respuestas:", error));
 }
-
 
 // Función para mostrar el resultado final
 function mostrarResultados(data) {
