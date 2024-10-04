@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para cargar preguntas desde la base de datos
 function cargarPreguntas() {
-  fetch("http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/read.php")
+  fetch("../../back/BackEnd/read.php")
       .then(response => response.json())
       .then(data => {
           const container = document.getElementById('questions-container');
@@ -151,7 +151,7 @@ function guardarPregunta(formDiv) {
   formData.append('respuesta_correcta', respuestaCorrecta);
 
   // Realizar la solicitud POST para insertar la pregunta
-  fetch("http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/create.php", {
+  fetch("../../back/BackEnd/create.php", {
       method: 'POST',
       body: formData
   })
@@ -172,7 +172,7 @@ function guardarPregunta(formDiv) {
 
 function editarPregunta(pregunta) {
     // Hacer una solicitud para obtener los datos completos de la pregunta
-    fetch(`http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/update.php?id=${pregunta.id}`)
+    fetch(`../../back/BackEnd/update.php?id=${pregunta.id}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -252,7 +252,7 @@ function actualizarPregunta(id, formDiv, preguntaData) {
     formData.append('respuesta_id_4', preguntaData.respuestas[3].respuesta_id);
 
     // Realizar la solicitud POST para actualizar la pregunta
-    fetch("http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/update.php", {
+    fetch("../../back/BackEnd/update.php", {
         method: 'POST',
         body: formData
     })
@@ -273,7 +273,7 @@ function actualizarPregunta(id, formDiv, preguntaData) {
 // Función para borrar una pregunta de la base de datos
 function borrarPregunta(id, row) {
   if (confirm('¿Estás seguro de que deseas borrar esta pregunta?')) {
-      fetch(`http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/delete.php?id=${id}`, {
+      fetch(`../../back/BackEnd/delete.php?id=${id}`, {
           method: 'DELETE' 
       })
       .then(response => response.json())
