@@ -172,87 +172,104 @@ function guardarPregunta(formDiv) {
 }
 
 function editarPregunta(pregunta) {
-  if (!pregunta.respuestas || pregunta.respuestas.length === 0) {
-      console.error('No se encontraron respuestas para esta pregunta.');
-      alert('No se encontraron respuestas para esta pregunta.');
-      return; // Salir de la función si no hay respuestas
-  }
+    // Hacer una solicitud para obtener los datos completos de la pregunta
+    fetch(`http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/update.php?id=${pregunta.id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const preguntaData = data.data;
 
-  const formDiv = document.createElement('div');
-  formDiv.innerHTML = `
-      <h3>Editar Pregunta</h3>
-      <label for="pregunta">Pregunta:</label>
-      <input type="text" id="pregunta" value="${pregunta.pregunta}" required><br>
-      
-      <label for="imagen">Imagen (URL):</label>
-      <input type="text" id="imagen" value="${pregunta.imagen}" required><br>
-      
-      <label for="opcion1">Opción 1:</label>
-      <input type="text" id="opcion1" value="${pregunta.respuestas[0] ? pregunta.respuestas[0].respuesta : ''}" required><br>
-      
-      <label for="opcion2">Opción 2:</label>
-      <input type="text" id="opcion2" value="${pregunta.respuestas[1] ? pregunta.respuestas[1].respuesta : ''}" required><br>
-      
-      <label for="opcion3">Opción 3:</label>
-      <input type="text" id="opcion3" value="${pregunta.respuestas[2] ? pregunta.respuestas[2].respuesta : ''}" required><br>
-      
-      <label for="opcion4">Opción 4:</label>
-      <input type="text" id="opcion4" value="${pregunta.respuestas[3] ? pregunta.respuestas[3].respuesta : ''}" required><br>
-      
-      <label for="respuesta-correcta">Respuesta Correcta (1-4):</label>
-      <input type="number" id="respuesta-correcta" value="${pregunta.respuestas.findIndex(res => res.correcta == 1) + 1}" min="1" max="4" required><br>
-      
-      <button id="actualizar-btn">Actualizar Pregunta</button>
-  `;
+                const formDiv = document.createElement('div');
+                formDiv.innerHTML = `
+                    <h3>Editar Pregunta</h3>
+                    <label for="pregunta">Pregunta:</label>
+                    <input type="text" id="pregunta" value="${preguntaData.pregunta}" required><br>
+                    
+                    <label for="imagen">Imagen (URL):</label>
+                    <input type="text" id="imagen" value="${preguntaData.imagen}" required><br>
+                    
+                    <label for="opcion1">Opción 1:</label>
+                    <input type="text" id="opcion1" value="${preguntaData.respuestas[0].respuesta}" required><br>
+                    
+                    <label for="opcion2">Opción 2:</label>
+                    <input type="text" id="opcion2" value="${preguntaData.respuestas[1].respuesta}" required><br>
+                    
+                    <label for="opcion3">Opción 3:</label>
+                    <input type="text" id="opcion3" value="${preguntaData.respuestas[2].respuesta}" required><br>
+                    
+                    <label for="opcion4">Opción 4:</label>
+                    <input type="text" id="opcion4" value="${preguntaData.respuestas[3].respuesta}" required><br>
+                    
+                    <label for="respuesta-correcta">Respuesta Correcta (1-4):</label>
+                    <input type="number" id="respuesta-correcta" value="${preguntaData.respuestas.findIndex(res => res.correcta == 1) + 1}" min="1" max="4" required><br>
+                    
+                    <button id="actualizar-btn">Actualizar Pregunta</button>
+                    <button id="cancelar-btn">Cancelar</button>
+                `;
 
-  document.body.appendChild(formDiv);
+                document.body.appendChild(formDiv);
 
-  // Evento para actualizar la pregunta
-  document.getElementById('actualizar-btn').addEventListener('click', () => actualizarPregunta(pregunta.id, formDiv));
+                // Evento para actualizar la pregunta
+                document.getElementById('actualizar-btn').addEventListener('click', () => {
+                    actualizarPregunta(pregunta.id, formDiv, preguntaData);
+                });
+
+                // Evento para cancelar la edición
+                document.getElementById('cancelar-btn').addEventListener('click', () => {
+                    formDiv.remove(); // Eliminar el formulario al cancelar
+                });
+            } else {
+                alert('No se pudieron cargar los datos de la pregunta.');
+            }
+        })
+        .catch(error => console.error('Error al cargar la pregunta para editar:', error));
 }
 
-// Función para actualizar la pregunta en la base de datos
-function actualizarPregunta(id, formDiv) {
-  const pregunta = document.getElementById('pregunta').value;
-  const imagen = document.getElementById('imagen').value;
-  const opciones = [
-      document.getElementById('opcion1').value,
-      document.getElementById('opcion2').value,
-      document.getElementById('opcion3').value,
-      document.getElementById('opcion4').value
-  ];
-  const respuestaCorrecta = document.getElementById('respuesta-correcta').value;
+function actualizarPregunta(id, formDiv, preguntaData) {
+    const pregunta = document.getElementById('pregunta').value;
+    const imagen = document.getElementById('imagen').value;
+    const opciones = [
+        document.getElementById('opcion1').value,
+        document.getElementById('opcion2').value,
+        document.getElementById('opcion3').value,
+        document.getElementById('opcion4').value,
+    ];
+    const respuestaCorrecta = document.getElementById('respuesta-correcta').value;
 
-  // Crear un objeto FormData para enviar los datos
-  const formData = new FormData();
-  formData.append('id', id);
-  formData.append('pregunta', pregunta);
-  formData.append('imagen', imagen);
-  formData.append('opcion1', opciones[0]);
-  formData.append('opcion2', opciones[1]);
-  formData.append('opcion3', opciones[2]);
-  formData.append('opcion4', opciones[3]);
-  formData.append('respuesta_correcta', respuestaCorrecta);
+    // Crear un objeto FormData para enviar los datos
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('pregunta', pregunta);
+    formData.append('imagen', imagen);
+    formData.append('opcion1', opciones[0]);
+    formData.append('opcion2', opciones[1]);
+    formData.append('opcion3', opciones[2]);
+    formData.append('opcion4', opciones[3]);
+    formData.append('respuesta_correcta', respuestaCorrecta);
+    // Añadir los ids de las respuestas
+    formData.append('respuesta_id_1', preguntaData.respuestas[0].respuesta_id);
+    formData.append('respuesta_id_2', preguntaData.respuestas[1].respuesta_id);
+    formData.append('respuesta_id_3', preguntaData.respuestas[2].respuesta_id);
+    formData.append('respuesta_id_4', preguntaData.respuestas[3].respuesta_id);
 
-  // Realizar la solicitud POST para actualizar la pregunta
-  fetch("http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/update.php", {
-      method: 'POST',
-      body: formData
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.success) {
-          console.log('Pregunta actualizada exitosamente');
-          cargarPreguntas(); // Recargar preguntas para mostrar la actualizada
-      } else {
-          console.error('Error al actualizar la pregunta');
-      }
-  })
-  .catch(error => console.error('Error al enviar la solicitud:', error));
-
-  // Eliminar el formulario después de actualizar
-  formDiv.remove();
+    // Realizar la solicitud POST para actualizar la pregunta
+    fetch("http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/update.php", {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Pregunta actualizada exitosamente');
+            cargarPreguntas(); // Recargar preguntas para mostrar la actualizada
+            formDiv.remove();  // Eliminar el formulario después de actualizar
+        } else {
+            console.error('Error al actualizar la pregunta:', data.message);
+        }
+    })
+    .catch(error => console.error('Error al enviar la solicitud:', error));
 }
+
 
 // Función para borrar una pregunta de la base de datos
 function borrarPregunta(id, row) {
