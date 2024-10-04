@@ -52,7 +52,7 @@ function mostrarPaginaInicial() {
 // Función para cargar preguntas del backend
 function cargarPreguntas(numPreguntas) {
   fetch(
-    `http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`
+    `./tr0-2024-2025-un-munt-de-preguntes-Purvish69\back\BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -183,7 +183,7 @@ function finalizarCuestionario() {
   clearInterval(temporizador);
 
   fetch(
-    "http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/finalitza.php",
+    "./tr0-2024-2025-un-munt-de-preguntes-Purvish69\back\BackEnd/finalitza.php",
     {
       method: "POST",
       headers: {

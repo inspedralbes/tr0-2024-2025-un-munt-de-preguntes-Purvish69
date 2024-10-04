@@ -1,18 +1,9 @@
 <?php
 
-// read.php
+
 session_start();
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
 
-$conn = new mysqli($host, $usuario, $password, $nombreBD);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
-
+include 'cone.php';
 $sql = "SELECT * FROM preguntes";
 $result = $conn->query($sql);
 $preguntas = [];

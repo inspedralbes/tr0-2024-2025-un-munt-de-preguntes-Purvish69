@@ -1,17 +1,5 @@
 <?php
-
-
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
-
-// Crear conexion
-$conn = new mysqli($host, $usuario, $password);
-
-if ($conn->connect_error) { 
-    die("Conexión fallida: " . $conn->connect_error);
-}
+include 'cone.php';
 
 $sql = "CREATE DATABASE IF NOT EXISTS $nombreBD";
 if($conn->query($sql) === TRUE){

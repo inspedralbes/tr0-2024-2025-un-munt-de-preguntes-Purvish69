@@ -1,12 +1,7 @@
 <?php
 session_start();
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
 
-// Crear conexión a la base de datos
-$conn = new mysqli($host, $usuario, $password, $nombreBD);
+include 'cone.php';
 
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Conexión fallida: ' . $conn->connect_error]);

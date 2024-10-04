@@ -1,16 +1,7 @@
 <?php
 session_start();
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
 
-// Crear conexión a la base de datos
-$conn = new mysqli($host, $usuario, $password, $nombreBD);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+include 'cone.php';
 
 // Obtener los datos del formulario
 $pregunta = $_POST['pregunta'];

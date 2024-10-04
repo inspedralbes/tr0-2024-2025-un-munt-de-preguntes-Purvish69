@@ -1,16 +1,7 @@
 <?php
 session_start();
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
 
-// Crear conexión a la base de datos
-$conn = new mysqli($host, $usuario, $password, $nombreBD);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+include 'cone.php';
 
 // Verificar si se ha recibido el ID de la pregunta
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {

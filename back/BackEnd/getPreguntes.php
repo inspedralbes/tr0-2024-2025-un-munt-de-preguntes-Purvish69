@@ -1,16 +1,6 @@
 <?php
 session_start();
-$host = "localhost";
-$usuario = "root";
-$password = "";
-$nombreBD = "autoescuela";
-
-// Crear conexión a la base de datos
-$conn = new mysqli($host, $usuario, $password, $nombreBD);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
+include 'cone.php';
 
 // Obtener el número de preguntas desde la URL
 $numPreguntas = isset($_GET['numPreguntas']) ? intval($_GET['numPreguntas']) : 10; // Por defecto 10
