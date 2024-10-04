@@ -1,15 +1,6 @@
 <?php
-session_start();
 
 session_start();
-
-// Comprobar si las preguntas están en la sesión
-if (!isset($_SESSION['preguntasSeleccionadas']) || empty($_SESSION['preguntasSeleccionadas'])) {
-    echo json_encode([
-        "error" => "No se encontraron preguntas en la sesión"
-    ]);
-    exit();
-}
 
 include 'cone.php';
 

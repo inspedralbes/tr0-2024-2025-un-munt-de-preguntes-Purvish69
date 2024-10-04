@@ -69,7 +69,7 @@ foreach ($preguntasArray as &$pregunta) {
 $_SESSION['preguntasSeleccionadas'] = $preguntasArray;
 
 // Imprimir las preguntas guardadas en la sesión
-error_log(print_r($_SESSION['preguntasSeleccionadas'], true));
+// error_log(print_r($_SESSION['preguntasSeleccionadas'], true));
 
 // Enviar las preguntas seleccionadas al frontend en formato JSON
 echo json_encode($preguntasArray);

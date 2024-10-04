@@ -28,7 +28,7 @@ body {
 /* Estilo para el título del proyecto */
 #proyecto {
   font-size: 2em;
-  background-color: #d50303; /* Color de fondo claro */
+  background-color: #f4bfbf; /* Color de fondo claro */
   border-radius: 50%; /* Hacer el título circular */
   padding: 20px;
   display: inline-block;
