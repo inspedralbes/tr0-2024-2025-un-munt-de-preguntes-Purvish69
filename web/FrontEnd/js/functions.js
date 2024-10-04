@@ -52,7 +52,7 @@ function mostrarPaginaInicial() {
 // Función para cargar preguntas del backend
 function cargarPreguntas(numPreguntas) {
   fetch(
-    `../back/BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`
+    `../../back/BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -183,7 +183,7 @@ function finalizarCuestionario() {
   clearInterval(temporizador);
 
   fetch(
-    "../back/BackEnd/finalitza.php",
+    "../../back/BackEnd/finalitza.php",
     {
       method: "POST",
       headers: {

@@ -17,10 +17,10 @@ if ($conn->connect_error) {
 
 
 
-// // $host = "localhost";
-// // $usuario = "root";
-// // $password = "";
-// // $nombreBD = "autoescuela";
+// $host = "localhost";
+ // $usuario = "root";
+ // $password = "";
+ // $nombreBD = "autoescuela";
 
 // // Crear conexion
 // $conn = new mysqli($servername, $username, $password, $db);
