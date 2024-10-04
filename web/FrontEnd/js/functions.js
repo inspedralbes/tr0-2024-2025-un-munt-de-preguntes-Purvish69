@@ -212,6 +212,7 @@ function finalizarCuestionario() {
     });
 }
 
+
 // Función para mostrar el resultado final
 function mostrarResultados(data) {
   let htmlString = `<h3>Has completado el cuestionario.</h3>`;
