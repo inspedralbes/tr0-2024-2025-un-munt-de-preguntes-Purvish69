@@ -64,7 +64,7 @@ if (!empty($preguntas)) {
     }
 }
 
-// Convertir el array con IDs en un array indexado
+// Convertir el array con ID en un array indexado
 $preguntasArray = array_values($preguntas); 
 
 // Eliminar el índice que marca la respuesta correcta antes de enviar al frontend

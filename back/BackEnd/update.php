@@ -10,7 +10,7 @@ $conn = new mysqli($host, $usuario, $password, $nombreBD);
 
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Conexión fallida: ' . $conn->connect_error]);
-    exit(); // Detener la ejecución
+    exit();
 }
 
 // Obtener los datos de la pregunta para la edición
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     ];
     $respuestaCorrecta = $_POST['respuesta_correcta'];
 
-    $conn->begin_transaction(); // Empezar transacción
+    $conn->begin_transaction(); 
     try {
         // Actualizar la pregunta
         $sqlActualizarPregunta = "UPDATE preguntes SET pregunta = ?, imagen = ? WHERE id = ?";

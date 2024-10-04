@@ -2,8 +2,8 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-image: url(download.jpeg);
-  /*background-color: #f9f9f9;  Color de fondo claro */
+  background-color: rgb(128, 196, 219);
+
   margin: 0;
   padding: 0;
   display: flex;
@@ -28,7 +28,7 @@ body {
 /* Estilo para el título del proyecto */
 #proyecto {
   font-size: 2em;
-  background-color: #e1f5fe; /* Color de fondo claro */
+  background-color: #f4bfbf; /* Color de fondo claro */
   border-radius: 50%; /* Hacer el título circular */
   padding: 20px;
   display: inline-block;
@@ -42,7 +42,7 @@ h3 {
 
 /* Estilo para los botones de respuesta */
 .btn-respuesta {
-  background-color: #81d4fa; /* Color de fondo claro */
+  background-color: #79eaee; /* Color de fondo claro */
   color: #333; /* Color de texto oscuro */
   border: none;
   border-radius: 5px; /* Bordes redondeados */

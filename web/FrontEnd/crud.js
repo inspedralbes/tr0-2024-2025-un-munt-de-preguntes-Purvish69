@@ -29,7 +29,6 @@ function cargarPreguntas() {
           `;
           table.appendChild(headerRow);
 
-          // Iterar sobre cada pregunta
           data.forEach(pregunta => {
               const row = document.createElement('tr');
 
@@ -72,12 +71,12 @@ function cargarPreguntas() {
               const accionesCell = document.createElement('td');
               const editarBtn = document.createElement('button');
               editarBtn.textContent = 'Editar';
-              editarBtn.classList.add('editar'); // Esto para que pueda modificar los botones de estilo
+              editarBtn.classList.add('editar'); // modificar los botones de estilo
               editarBtn.addEventListener('click', () => editarPregunta(pregunta)); // Modificado para pasar el objeto completo
 
               const borrarBtn = document.createElement('button');
               borrarBtn.textContent = 'Borrar';
-              borrarBtn.classList.add('borrar'); // Esto para que pueda modificar los botones de estilo
+              borrarBtn.classList.add('borrar'); // modificar los botones de estilo
               borrarBtn.addEventListener('click', () => borrarPregunta(pregunta.id, row));
 
               accionesCell.appendChild(editarBtn);
@@ -160,7 +159,7 @@ function guardarPregunta(formDiv) {
   .then(data => {
       if (data.success) {
           console.log('Pregunta creada exitosamente');
-          cargarPreguntas(); // Recargar preguntas para mostrar la nueva
+          cargarPreguntas(); 
       } else {
           console.error('Error al crear la pregunta');
       }
@@ -216,7 +215,7 @@ function editarPregunta(pregunta) {
 
                 // Evento para cancelar la edición
                 document.getElementById('cancelar-btn').addEventListener('click', () => {
-                    formDiv.remove(); // Eliminar el formulario al cancelar
+                    formDiv.remove(); 
                 });
             } else {
                 alert('No se pudieron cargar los datos de la pregunta.');
@@ -246,7 +245,7 @@ function actualizarPregunta(id, formDiv, preguntaData) {
     formData.append('opcion3', opciones[2]);
     formData.append('opcion4', opciones[3]);
     formData.append('respuesta_correcta', respuestaCorrecta);
-    // Añadir los ids de las respuestas
+    // Añadir los id de las respuestas
     formData.append('respuesta_id_1', preguntaData.respuestas[0].respuesta_id);
     formData.append('respuesta_id_2', preguntaData.respuestas[1].respuesta_id);
     formData.append('respuesta_id_3', preguntaData.respuestas[2].respuesta_id);
@@ -261,8 +260,8 @@ function actualizarPregunta(id, formDiv, preguntaData) {
     .then(data => {
         if (data.success) {
             console.log('Pregunta actualizada exitosamente');
-            cargarPreguntas(); // Recargar preguntas para mostrar la actualizada
-            formDiv.remove();  // Eliminar el formulario después de actualizar
+            cargarPreguntas(); 
+            formDiv.remove(); 
         } else {
             console.error('Error al actualizar la pregunta:', data.message);
         }
@@ -275,13 +274,13 @@ function actualizarPregunta(id, formDiv, preguntaData) {
 function borrarPregunta(id, row) {
   if (confirm('¿Estás seguro de que deseas borrar esta pregunta?')) {
       fetch(`http://localhost:8800/tr0-2024-2025-un-munt-de-preguntes-Purvish69/back/BackEnd/delete.php?id=${id}`, {
-          method: 'DELETE' // Cambiado a DELETE
+          method: 'DELETE' 
       })
       .then(response => response.json())
       .then(data => {
           if (data.success) {
               console.log('Pregunta borrada exitosamente');
-              row.remove(); // Remover la fila de la tabla
+              row.remove(); 
           } else {
               console.error('Error al borrar la pregunta', data.message);
           }
