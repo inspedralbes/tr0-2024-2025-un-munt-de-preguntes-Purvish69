@@ -1,11 +1,18 @@
 <?php
 session_start();
-
 include 'cone.php';
 
 // Obtener las respuestas del usuario
 $datosRecibidos = file_get_contents('php://input');
 $respuestasDeUsuario = json_decode($datosRecibidos, true);
+
+// Verificar que las respuestas del usuario se recibieron correctamente
+if (!$respuestasDeUsuario) {
+    echo json_encode([
+        "error" => "No se recibieron las respuestas del usuario."
+    ]);
+    exit();
+}
 
 $preguntasSeleccionadas = $_SESSION['preguntasSeleccionadas']; // Las preguntas seleccionadas almacenadas en la sesión
 $respuestasCorrectas = 0;
@@ -36,7 +43,8 @@ $resultado = [
     'totalPreguntas' => $totalPreguntas,
     'respuestasCorrectas' => $respuestasCorrectas // Corrige el nombre de la clave aquí
 ];
-header('Content-Type: application/json'); // Asegurarse de que el encabezado indique JSON
+
+header('Content-Type: application/json');
 echo json_encode($resultado);
 
 $conn->close();
