@@ -1,8 +1,8 @@
 let preguntas = [];
 let indiceActual = 0;
 let respuestasUsuario = [];
-let tiempoRestante = 30; // Tiempo en segundos
-let temporizador; // Variable para el temporizador
+let tiempoRestante = 30;
+let temporizador;
 
 // Almacenar el nombre del usuario en localStorage
 let nombreUsuario = localStorage.getItem("nombreUsuario") || "";
@@ -28,32 +28,34 @@ function mostrarPaginaInicial() {
     <button id="borrarNombre">Borrar Nombre</button>
   `;
 
-  const nombreInput = document.getElementById('nombre');
+  const nombreInput = document.getElementById("nombre");
   nombreInput.value = nombreUsuario;
 
-  document.getElementById('iniciarCuestionario').addEventListener('click', () => {
-    const nombre = nombreInput.value;
-    const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  document
+    .getElementById("iniciarCuestionario")
+    .addEventListener("click", () => {
+      const nombre = nombreInput.value;
+      const numPreguntas = parseInt(
+        document.getElementById("numPreguntas").value
+      );
 
-    if (nombre && numPreguntas > 0) {
-      localStorage.setItem("nombreUsuario", nombre);
-      cargarPreguntas(numPreguntas); // Cargar preguntas según el número introducido
-    } else {
-      alert("Por favor, completa todos los campos.");
-    }
-  });
+      if (nombre && numPreguntas > 0) {
+        localStorage.setItem("nombreUsuario", nombre);
+        cargarPreguntas(numPreguntas); // Cargar preguntas según el número introducido
+      } else {
+        alert("Por favor, completa todos los campos.");
+      }
+    });
 
-  document.getElementById('borrarNombre').addEventListener('click', () => {
+  document.getElementById("borrarNombre").addEventListener("click", () => {
     localStorage.removeItem("nombreUsuario");
-    nombreInput.value = '';
+    nombreInput.value = "";
   });
 }
 
 // Función para cargar preguntas del backend
 function cargarPreguntas(numPreguntas) {
-  fetch(
-    `../../back/BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`
-  )
+  fetch(`../../back/BackEnd/getPreguntes.php?numPreguntas=${numPreguntas}`)
     .then((response) => response.json())
     .then((data) => {
       preguntas = data; // Cargar las preguntas recibidas
@@ -84,16 +86,18 @@ function iniciarTemporizador() {
     tiempoRestante--;
     actualizarTemporizador();
 
-    if (tiempoRestante <= 0) { // Corregir aquí: debe ser tiempoRestante
+    if (tiempoRestante <= 0) {
+      // Corregir aquí: debe ser tiempoRestante
       clearInterval(temporizador);
       finalizarCuestionario();
     }
-
   }, 1000);
 }
 
 function actualizarTemporizador() {
-  document.getElementById("temporizador").innerHTML = `Tiempo restante: ${tiempoRestante} segundos`;
+  document.getElementById(
+    "temporizador"
+  ).innerHTML = `Tiempo restante: ${tiempoRestante} segundos`;
 }
 
 // Función para mostrar una pregunta con las opciones de respuesta
@@ -124,12 +128,16 @@ function mostrarPregunta() {
     btn.addEventListener("click", seleccionarRespuesta);
   });
 
-  document.getElementById("button-siguiente").addEventListener("click", siguientePregunta);
+  document
+    .getElementById("button-siguiente")
+    .addEventListener("click", siguientePregunta);
 }
 
 // Función para manejar la selección de una respuesta
 function seleccionarRespuesta(event) {
-  document.querySelectorAll(".btn-respuesta").forEach((btn) => btn.classList.remove("selected"));
+  document
+    .querySelectorAll(".btn-respuesta")
+    .forEach((btn) => btn.classList.remove("selected"));
   event.target.classList.add("selected");
 }
 
@@ -142,7 +150,9 @@ function siguientePregunta() {
 
     // Mostrar en console la pregunta y la opción seleccionada
     const letras = ["A", "B", "C", "D"];
-    console.log(`Pregunta ${indiceActual + 1}, Opción ${letras[respuestaIndex]}`);
+    console.log(
+      `Pregunta ${indiceActual + 1}, Opción ${letras[respuestaIndex]}`
+    );
 
     // Actualizar estado de la pregunta
     estadoDeLaPartida.preguntes[indiceActual].feta = true; // Marcar la pregunta como respondida
@@ -182,16 +192,13 @@ function actualizarMarcador() {
 function finalizarCuestionario() {
   clearInterval(temporizador);
 
-  fetch(
-    `../../back/BackEnd/finalitza.php`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(respuestasUsuario),
-    }
-  )
+  fetch(`../../back/BackEnd/finalitza.php`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(respuestasUsuario),
+  })
     .then((response) => response.json())
     .then((data) => {
       console.log("Respuesta del servidor:", data);
@@ -207,7 +214,9 @@ function mostrarResultados(data) {
   htmlString += `<button id="reiniciar-btn">Reiniciar cuestionario</button>`;
 
   document.getElementById("pintaPreguntes").innerHTML = htmlString;
-  document.getElementById("reiniciar-btn").addEventListener("click", reiniciarCuestionario);
+  document
+    .getElementById("reiniciar-btn")
+    .addEventListener("click", reiniciarCuestionario);
 }
 
 // Función para reiniciar el cuestionario

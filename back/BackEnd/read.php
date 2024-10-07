@@ -1,9 +1,9 @@
 <?php
 
-
 session_start();
 
 include 'cone.php';
+
 $sql = "SELECT * FROM preguntes";
 $result = $conn->query($sql);
 $preguntas = [];

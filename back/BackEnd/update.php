@@ -3,11 +3,6 @@ session_start();
 
 include 'cone.php';
 
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Conexión fallida: ' . $conn->connect_error]);
-    exit();
-}
-
 // Obtener los datos de la pregunta para la edición
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $preguntaId = $_GET['id'];
